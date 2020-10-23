@@ -1,2 +1,2 @@
-# credibility-api
-repository for credibility api 
+# Credibility Api
+
