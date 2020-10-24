@@ -64,11 +64,20 @@ from xml.etree.cElementTree import iterparse
 import mwparserfromhell
 import html.parser as HTMLParser
 import urllib.request
-
+from urllib.parse import urlsplit
 
 
 FULL_CITE_TEMPLATES = ['cite', 'citation', 'vcite2', 'vcite', 'vancite', 'wikicite', 'wayback']
 SHORT_CITE_TEMPLATES = ['sfn','sfnp','sfnm','harvnb']
+
+def get_base_url(url):
+    try:
+        netloc = urlsplit(url).netloc
+        if netloc.startswith("www."):
+            netloc = netloc.replace("www.","")
+        return netloc if len(netloc) > 0 else None 
+    except:
+        return None
 
 # Short citation parsing is hard.
 # https://en.wikipedia.org/wiki/Wikipedia:Citation_templates_and_reference_anchors
@@ -338,7 +347,7 @@ if __name__ == '__main__':
 
             if refs.citelist:
                 for r in refs.citelist:
-                    if type(r) == OrderedDict:
+                    if type(r) == OrderedDict and "url" in r:
                         print(
                                 json.dumps(OrderedDict([
                                             ('page', title),
@@ -346,6 +355,7 @@ if __name__ == '__main__':
                                             # ('paragraphs', paragraphs),
                                             ]+ 
                                             list(r.items())[1:]
+                                            + [("url_domain", get_base_url(r["url"]))]
                                     ))
                             )
 
