@@ -63,6 +63,8 @@ from collections import OrderedDict
 from xml.etree.cElementTree import iterparse
 import mwparserfromhell
 import html.parser as HTMLParser
+import urllib.request
+
 
 
 FULL_CITE_TEMPLATES = ['cite', 'citation', 'vcite2', 'vcite', 'vancite', 'wikicite', 'wayback']
@@ -136,6 +138,18 @@ def template_to_dict(template):
             cite[param.name.strip()] = val
     return cite
 
+def get_qid_from_title(lang, title):
+    title = urllib.parse.quote(title)
+    query = f"https://{lang}.wikipedia.org/w/api.php?action=query&prop=pageprops&titles={title}&format=json"
+    # open a connection to a URL using urllib
+    webUrl  = urllib.request.urlopen(query)
+    #get the result code and print it
+    if str(webUrl.getcode()) == "200":
+        # read the data from the URL and print it
+        data = webUrl.read()
+        return list(json.loads(data)["query"]["pages"].values())[0]["pageid"]
+    else:
+        return None
 
 class References():
     
@@ -287,6 +301,7 @@ class References():
                         refs.append(cite)
         yield text, refs
 
+
 if __name__ == '__main__':
     import json
     source = sys.stdin
@@ -302,8 +317,16 @@ if __name__ == '__main__':
 
     # Mediawiki Markup parsing
     for elem in elems:
+        if elem.tag.endswith("dbname"):
+            __LANG__ = elem.text.replace("wiki","")
+
         if elem.tag.endswith('page'):
             title = elem.find(title_path).text.replace(' ','_')
+
+            qid = get_qid_from_title(__LANG__,title)
+
+            ## continue here: 
+
             text = elem.find(text_path).text
             refs = References(title)
             paragraphs = []
@@ -314,12 +337,19 @@ if __name__ == '__main__':
                     paragraphs.append({'text': paragraph, 'refs':cites})
 
             if refs.citelist:
-                print(json.dumps(OrderedDict([
-                    ('page', title),
-                    # ('paragraphs', paragraphs),
-                    ('references', refs.citelist),
-                ])))
-                for k,v in refs.citeref.items():
-                    v = refs.citelist[v]
-                    if not v:
-                        print(title,': missing:\n\t', k, file=sys.stderr)
+                for r in refs.citelist:
+                    if type(r) == OrderedDict:
+                        print(
+                                json.dumps(OrderedDict([
+                                            ('page', title),
+                                            ('qid',qid),
+                                            # ('paragraphs', paragraphs),
+                                            ]+ 
+                                            list(r.items())[1:]
+                                    ))
+                            )
+
+                # for k,v in refs.citeref.items():
+                #     v = refs.citelist[v]
+                #     if not v:
+                #         print(title,': missing:\n\t', k, file=sys.stderr)
