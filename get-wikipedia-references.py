@@ -326,40 +326,43 @@ if __name__ == '__main__':
 
     # Mediawiki Markup parsing
     for elem in elems:
-        if elem.tag.endswith("dbname"):
-            __LANG__ = elem.text.replace("wiki","")
+        try:
+            if elem.tag.endswith("dbname"):
+                __LANG__ = elem.text.replace("wiki","")
 
-        if elem.tag.endswith('page'):
-            title = elem.find(title_path).text.replace(' ','_')
+            if elem.tag.endswith('page'):
+                title = elem.find(title_path).text.replace(' ','_')
 
-            qid = get_qid_from_title(__LANG__,title)
+                qid = get_qid_from_title(__LANG__,title)
 
-            ## continue here: 
+                ## continue here: 
 
-            text = elem.find(text_path).text
-            refs = References(title)
-            paragraphs = []
+                text = elem.find(text_path).text
+                refs = References(title)
+                paragraphs = []
 
-            wikicode = mwparserfromhell.parse(text, skip_style_tags=True)
-            for paragraph, cites in refs.parse_paragraphs(wikicode):
-                if paragraph and cites:
-                    paragraphs.append({'text': paragraph, 'refs':cites})
+                wikicode = mwparserfromhell.parse(text, skip_style_tags=True)
+                for paragraph, cites in refs.parse_paragraphs(wikicode):
+                    if paragraph and cites:
+                        paragraphs.append({'text': paragraph, 'refs':cites})
 
-            if refs.citelist:
-                for r in refs.citelist:
-                    if type(r) == OrderedDict and "url" in r:
-                        print(
-                                json.dumps(OrderedDict([
-                                            ('page', title),
-                                            ('qid',qid),
-                                            # ('paragraphs', paragraphs),
-                                            ]+ 
-                                            list(r.items())[1:]
-                                            + [("url_domain", get_base_url(r["url"]))]
-                                    ))
-                            )
+                if refs.citelist:
+                    for r in refs.citelist:
+                        if type(r) == OrderedDict and "url" in r:
+                            print(
+                                    json.dumps(OrderedDict([
+                                                ('page', title),
+                                                ('qid',qid),
+                                                # ('paragraphs', paragraphs),
+                                                ]+ 
+                                                list(r.items())[1:]
+                                                + [("url_domain", get_base_url(r["url"]))]
+                                        ))
+                                )
 
-                # for k,v in refs.citeref.items():
-                #     v = refs.citelist[v]
-                #     if not v:
-                #         print(title,': missing:\n\t', k, file=sys.stderr)
+                    # for k,v in refs.citeref.items():
+                    #     v = refs.citelist[v]
+                    #     if not v:
+                    #         print(title,': missing:\n\t', k, file=sys.stderr)
+        except:
+            pass
