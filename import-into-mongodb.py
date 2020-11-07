@@ -41,13 +41,13 @@ def insert_into_collection(file_data):
     :param file_data: file data to be inserted into the collection
     :return:
     """
-    collection = db[collection]
+    collection_all = db[collection]
     # if pymongo < 3.0, use insert()
     #collection_english.insert(file_data)
     # if pymongo >= 3.0 use insert_one() for inserting one document
     #collection_english.insert_one(file_data)
     # if pymongo >= 3.0 use insert_many() for inserting many documents
-    collection.insert_many(file_data)
+    collection_all.insert_many(file_data)
 
 
 if __name__ == '__main__':
@@ -58,7 +58,8 @@ if __name__ == '__main__':
         file_data = load_file_data(args.folder_name, file_name)
         try:
             insert_into_collection(file_data)
-        except e:
+        except Exception as e:
+            print('Exception:')
             print(e)
 
     client.close()
