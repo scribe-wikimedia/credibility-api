@@ -349,6 +349,8 @@ if __name__ == '__main__':
                 if refs.citelist:
                     for r in refs.citelist:
                         if type(r) == OrderedDict and "url" in r:
+                            if any(["." in i[0] for i in r.items()]):
+                                continue
                             print(
                                     json.dumps(OrderedDict([
                                                 ('page', title),
