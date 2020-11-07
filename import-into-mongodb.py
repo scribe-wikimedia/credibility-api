@@ -41,20 +41,24 @@ def insert_into_collection(file_data):
     :param file_data: file data to be inserted into the collection
     :return:
     """
-    collection_english = db[collection]
+    collection = db[collection]
     # if pymongo < 3.0, use insert()
     #collection_english.insert(file_data)
     # if pymongo >= 3.0 use insert_one() for inserting one document
     #collection_english.insert_one(file_data)
     # if pymongo >= 3.0 use insert_many() for inserting many documents
-    collection_english.insert_many(file_data)
+    collection.insert_many(file_data)
 
 
 if __name__ == '__main__':
     args = parser.parse_args()
     file_names = get_files(args.folder_name)
     for file_name in file_names:
+        print('Starting to input the file: ' + str(file_name))
         file_data = load_file_data(args.folder_name, file_name)
-        insert_into_collection(file_data)
+        try:
+            insert_into_collection(file_data)
+        except e:
+            print(e)
 
     client.close()
