@@ -12,6 +12,15 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/references'
 
 mongo = PyMongo(app)
 
+
+
+@app.route('/test', methods=['GET'])
+def get_landing():
+    """ testing landing page
+    :return:
+    """
+    return jsonify({'result': "This is the landing page of the Credibility API"})
+
 @app.route('/all', methods=['GET'])
 def get_all():
     """ Get all data from the database
