@@ -39,3 +39,8 @@ li a:hover {
   padding: 10px;
 }
 
+.logo {
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+

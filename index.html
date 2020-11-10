@@ -13,16 +13,17 @@
 </div>
 
 <ul class="nav">
-  <li><a class="active" href="#home">About Scribe</a></li>
+  <li><a href="#home">About Scribe</a></li>
   <li><a href="#all">All Data</a></li>
   <li><a href="#query">API Querying</a></li>
+  <li><a href="#about">About</a></li>
 </ul>
 
 <div class="content">
 
 <h2><a name="home">Scribe Reference API</a></h2>
 
-  <img src="scribe-reference-logo.png" alt="Scribe reference API logo: Scribe sitting, with quotation marks">
+<img class="logo" src="scribe-reference-logo.png" alt="Scribe reference API logo: Scribe sitting, with quotation marks">
 
 
 The Scribe reference API is based on the <a href="https://meta.wikimedia.org/wiki/Scribe">Scribe project</a>, which focuses on making trustworthy references accessible to Wikipedia editors. 
@@ -51,7 +52,7 @@ It also enables applications that want to measure credibility of sources based o
 
 <br><br><br>
 <h2><a name="all">Accessing All Data</a></h2>
-By acessing <b>/all</b>, all data in the database can be displayed. 
+By acessing <b>/all</b>, all data in the database can be displayed. (As the database holds all references across multiple languages, this feature is likely to be deprecated soon.)
 
 
 <br><br><br>
@@ -61,22 +62,13 @@ The dataset is saved in a MongoDB database, which can be directly queryied using
 The query is based on the MongoDB <i>find</i> queries, the documentation can be found <a href="https://docs.mongodb.com/manual/reference/method/db.collection.find/">here</a>.
 <br>
 For example, to get all references of all Berlin Wikipedia articles across languages, we can make use of the Wikidata entity id of Berlin, Q64.
-<br>
 The query looks as follows: <i>/api/query={"qid":"Q64"}</i>
 
-<script type="text/javascript">
-  window.onscroll = function() {myFunction()};
-  var navbar = document.getElementById("navbar");
-  var sticky = navbar.offsetTop;
-  function myFunction() {
-      if (window.pageYOffset >= sticky) {
-            navbar.classList.add("sticky")
-      } else {
-            navbar.classList.remove("sticky");
-      }
-  }
-
-</script>
+<br><br><br>
+<h2><a name="about">About</a></h2>
+The Scribe reference API is created by <a href="https://luciekaffee.github.io/">Lucie-Aimée Kaffee</a> and <a href="https://www.hadyelsahar.io/">Hady Elsahar</a>.
+<br>
+Supported by the WikiCred grant through MisinfoCon, more information can be found <a href="https://misinfocon.com/scribes-reference-api-makes-credibility-more-attainable-6360824b47e4">in this blogpost</a>.
 
 
 </div>
