@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+<div class="header">
+  <h2>Scribe Reference API</h2>
+  <p>Querying Wikipedia references across languages.</p>
+</div>
+
+<ul class="nav">
+  <li><a class="active" href="#home">About Scribe</a></li>
+  <li><a href="#all">All Data</a></li>
+  <li><a href="#query">API Querying</a></li>
+</ul>
+
+<div class="content">
+
+<h2><a name="home">Scribe Reference API</a></h2>
+
+  <img src="scribe-reference-logo.png" alt="Scribe reference API logo: Scribe sitting, with quotation marks">
+
+
+The Scribe reference API is based on the <a href="https://meta.wikimedia.org/wiki/Scribe">Scribe project</a>, which focuses on making trustworthy references accessible to Wikipedia editors. 
+While Scribe focuses on integrating section and reference suggestions into Wikipedia, the <i>Scribe reference API</i> focueses on exposing the data that Scribe uses for judging references to external users. 
+In particular, we focus on exposing existing Wikipedia references across languages. 
+<br>
+As part of the Scribe reference API, we are providing the online references of all articles on a set of different language Wikipedias.
+We include in the API for each page all references. For each reference we provide the following: 
+<br>
+<br>
+<ul class="list-group">
+  <li><b>page</b>: Name of the Wikipedia article, e.g. <i>Ada_Lovelace</i></li>
+  <li><b>qid</b>: Wikidata entity ID in the form <i>Q64</i></li>
+  <li><b>title</b>: Title of the reference <i></i></li>
+  <li><b>url</b>: Full URL to the reference</li>
+  <li><b>url_domain</b>: Domain of the reference URL</li>
+</ul>
+
+<br>
+Other metadata for the references, such as date, might be included if available.
+<br>
+
+This allows, for example, for exploring the reference coverage of bbc across languages or the shared references between different language version Wikipedias.
+It also enables applications that want to measure credibility of sources based on their usage on Wikipedia.
+
+
+<br><br><br>
+<h2><a name="all">Accessing All Data</a></h2>
+By acessing <b>/all</b>, all data in the database can be displayed. 
+
+
+<br><br><br>
+<h2><a name="query">API Querying</a></h2>
+The dataset is saved in a MongoDB database, which can be directly queryied using <b>/api/query=</b>.
+<br>
+The query is based on the MongoDB <i>find</i> queries, the documentation can be found <a href="https://docs.mongodb.com/manual/reference/method/db.collection.find/">here</a>.
+<br>
+For example, to get all references of all Berlin Wikipedia articles across languages, we can make use of the Wikidata entity id of Berlin, Q64.
+<br>
+The query looks as follows: <i>/api/query={"qid":"Q64"}</i>
+
+<script type="text/javascript">
+  window.onscroll = function() {myFunction()};
+  var navbar = document.getElementById("navbar");
+  var sticky = navbar.offsetTop;
+  function myFunction() {
+      if (window.pageYOffset >= sticky) {
+            navbar.classList.add("sticky")
+      } else {
+            navbar.classList.remove("sticky");
+      }
+  }
+
+</script>
+
+
+</div>
+</body>
+</html>
