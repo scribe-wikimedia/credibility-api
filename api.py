@@ -13,6 +13,9 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/references'
 mongo = PyMongo(app)
 
 
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
 @app.route('/test', methods=['GET'])
 def get_landing():

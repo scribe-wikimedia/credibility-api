@@ -156,7 +156,7 @@ def get_qid_from_title(lang, title):
     if str(webUrl.getcode()) == "200":
         # read the data from the URL and print it
         data = webUrl.read()
-        return list(json.loads(data)["query"]["pages"].values())[0]["pageid"]
+        return list(json.loads(data)["query"]["pages"].values())[0]["pageprops"]["wikibase_item"]
     else:
         return None
 
