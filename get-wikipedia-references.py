@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 """
 # Extract citations from Wikipedia dumps
 This script makes a best-effort at resolving inline references and citations.
